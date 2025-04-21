@@ -12,7 +12,7 @@ Este aplicativo permite que o usuário cadastre livros, acompanhe o progresso de
 - 📈 Tela de progresso com barra indicativa de leitura por livro
 - 🎯 Definição de meta de livros a serem lidos
 - 📊 Barra de progresso geral em relação à meta
-
+- 💾 Armazenamento local com SharedPreferences (persistência de dados)
 
 ---
 
@@ -77,5 +77,13 @@ lib/
 
 ---
 
-##  Autor
+## ✨ Autor
 - Victor Hugo das Neves de Jesus
+
+Se você gostou do projeto, ⭐ marque esse repositório no GitHub!
+
+---
+
+## 📄 Licença
+
+Este projeto é de uso educacional e sem fins lucrativos.

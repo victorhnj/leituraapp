@@ -1,3 +1,4 @@
+// screens/add_book_screen.dart
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,10 +14,11 @@ class AddBookScreen extends StatefulWidget {
 
 class _AddBookScreenState extends State<AddBookScreen> {
   final _formKey = GlobalKey<FormState>();
-  String title = '';
-  String author = '';
-  int totalPages = 0;
-  int pagesRead = 0;
+  final _titleController = TextEditingController();
+  final _authorController = TextEditingController();
+  final _totalPagesController = TextEditingController();
+  final _pagesReadController = TextEditingController();
+
   File? _coverImage;
 
   Future<void> _pickImage() async {
@@ -28,23 +30,23 @@ class _AddBookScreenState extends State<AddBookScreen> {
 
   void saveBook() {
     if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
       final newBook = Book(
-        title: title,
-        author: author,
-        totalPages: totalPages,
-        pagesRead: pagesRead,
+        title: _titleController.text,
+        author: _authorController.text,
+        totalPages: int.parse(_totalPagesController.text),
+        pagesRead: int.parse(_pagesReadController.text),
         coverPath: _coverImage?.path,
       );
       widget.onAdd(newBook);
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('Livro salvo')));
+
       setState(() {
-        title = '';
-        author = '';
-        totalPages = 0;
-        pagesRead = 0;
+        _titleController.clear();
+        _authorController.clear();
+        _totalPagesController.clear();
+        _pagesReadController.clear();
         _coverImage = null;
       });
     }
@@ -56,6 +58,15 @@ class _AddBookScreenState extends State<AddBookScreen> {
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     );
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _authorController.dispose();
+    _totalPagesController.dispose();
+    _pagesReadController.dispose();
+    super.dispose();
   }
 
   @override
@@ -98,27 +109,27 @@ class _AddBookScreenState extends State<AddBookScreen> {
                 ),
                 SizedBox(height: 16),
                 TextFormField(
+                  controller: _titleController,
                   decoration: customInput('Título'),
-                  onSaved: (value) => title = value!,
                   validator:
                       (value) => value!.isEmpty ? 'Informe o título' : null,
                 ),
                 SizedBox(height: 12),
                 TextFormField(
+                  controller: _authorController,
                   decoration: customInput('Autor'),
-                  onSaved: (value) => author = value!,
                 ),
                 SizedBox(height: 12),
                 TextFormField(
+                  controller: _totalPagesController,
                   decoration: customInput('Total de Páginas'),
                   keyboardType: TextInputType.number,
-                  onSaved: (value) => totalPages = int.parse(value!),
                 ),
                 SizedBox(height: 12),
                 TextFormField(
+                  controller: _pagesReadController,
                   decoration: customInput('Páginas Lidas'),
                   keyboardType: TextInputType.number,
-                  onSaved: (value) => pagesRead = int.parse(value!),
                 ),
                 SizedBox(height: 20),
                 ElevatedButton.icon(
